@@ -31,7 +31,7 @@ public class JavaFXMain extends Application {
 
         //  compile the code first where equations are calculated
         // handle that spaces should be removed when parsed but printed statements should include spaces
-// upload change to git
+
 
 
         BorderPane borderPane = new BorderPane();
