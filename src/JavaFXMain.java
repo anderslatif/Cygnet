@@ -31,7 +31,11 @@ public class JavaFXMain extends Application {
 
         //  compile the code first where equations are calculated
         // handle that spaces should be removed when parsed but printed statements should include spaces
-        
+        // allow period if // comes before, then remove the two slashes
+        // not allowed to have the same variable if that occurs then delete both the variable and the corresponding value
+
+
+        // before parsing there are lexers that lexes into lexemes
 
         BorderPane borderPane = new BorderPane();
         HBox menu = getHeaderMenu();
