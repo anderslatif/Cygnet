@@ -29,7 +29,7 @@ public class JavaFXMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        //  compile the code first where equations are calculated
+        // todo compile the code first where equations are calculated
         // handle that spaces should be removed when parsed but printed statements should include spaces
         // allow period if // comes before, then remove the two slashes
         // not allowed to have the same variable if that occurs then delete both the variable and the corresponding value
@@ -51,7 +51,7 @@ public class JavaFXMain extends Application {
         codeInput = new TextArea();
         borderPane.setCenter(codeInput);
 
-        codeInput.setText("print hello.\n" +
+        codeInput.setText("print Hello, how are you?.\n" +
                 "equate 1 + 1.\n" +
                 "assign a = 3.");
 
@@ -85,7 +85,7 @@ public class JavaFXMain extends Application {
         preferencesMenu.getItems().addAll(preferences, separator, about);
 
         Button run = new Button("Run");
-        run.setOnAction( e -> execute());
+        run.setOnAction( e -> Compiler.execute(codeInput, variablesList, consoleOutput));
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(preferencesMenu);
@@ -123,132 +123,10 @@ public class JavaFXMain extends Application {
 
 
 
-    public static void execute(){
-
-        tokenize(codeInput.getText());
-        consoleOutput.setText("");
-        try {
-            String string = "";
-            for (Variable v : variablesInMemory) {
-                string += v + "\n";
-            }
-            variablesList.setText(string);
-
-            String string2 = "";
-            for (String s : thingsToPrint) {
-                string2 += s + "\n";
-            }
-            consoleOutput.setText(string2);
-        } catch (Exception e){
-            e.printStackTrace();
-            consoleOutput.setText("Compile Error");
-        }
-
-    }
 
 
 
-    static ArrayList<String> tokens = new ArrayList<>();
-    static ArrayList<Variable> variablesInMemory = new ArrayList<>();
-    static ArrayList<String> thingsToPrint = new ArrayList<>();
 
-    public String[] primitiveTypes = {"number", "string"};
-    public String[] recognizedOperators = {"+", "-", "*", "/"};
-    public String[] recognizedExpressions = {"print", "equate", "assign"};
-
-
-
-    public static void tokenize(String text){
-        int counter;
-        String tempString;
-        tokens.clear();
-        variablesInMemory.clear();
-        thingsToPrint.clear();
-
-        String contents = (text.replaceAll(" ", "").replaceAll("\n", "").replaceAll("\t", ""));
-
-        for(counter = 0; counter <= contents.length()-1; counter++){
-
-            if(contents.charAt(counter) == 'p' && contents.charAt(counter+1) == 'r' && contents.charAt(counter+2) == 'i' && contents.charAt(counter+3) == 'n' && contents.charAt(counter+4) == 't'){
-                tokens.add("print");
-                counter += 5;
-                tempString = "";
-
-                while(contents.charAt(counter) != '.'){
-                    tempString += contents.charAt(counter);
-                    counter++;
-                }
-                tokens.add(tempString);
-            }
-
-            if(contents.charAt(counter) == 'e' && contents.charAt(counter+1) == 'q' && contents.charAt(counter+2) == 'u' && contents.charAt(counter+3) == 'a'
-                    && contents.charAt(counter+4) == 't' && contents.charAt(counter+5) == 'e'){
-                tokens.add("equate");
-                counter += 6;
-                tempString = "";
-
-                while(contents.charAt(counter) != '.'){
-                    tempString += contents.charAt(counter);
-                    counter++;
-                }
-                tokens.add(tempString);
-            }
-
-            if(contents.charAt(counter) == 'a' && contents.charAt(counter+1) == 's' && contents.charAt(counter+2) == 's' && contents.charAt(counter+3) == 'i'
-                    && contents.charAt(counter+4) == 'g' && contents.charAt(counter+5) == 'n'){
-                tokens.add("assign");
-                counter += 6;
-                tempString = "";
-                String tempString2 = "";
-
-                while(contents.charAt(counter) != '='){
-                    tempString += contents.charAt(counter);
-                    counter++;
-                }
-                counter++; //gets rid of the equals sign
-                while(contents.charAt(counter) != '.'){
-                    tempString2 += contents.charAt(counter);
-                    counter++;
-                }
-                tokens.add(tempString);
-                tokens.add(tempString2);
-            }
-
-
-
-        }
-        parse();
-    }
-
-
-    public static void parse(){
-
-        for(int i = 0; i < tokens.size(); i++){
-
-            if(tokens.get(i).equals("print")){
-                thingsToPrint.add(tokens.get(i+1));
-                i++;
-            }
-
-            if(tokens.get(i).equals("equate")){
-                equate();
-                i++;
-            }
-
-            if(tokens.get(i).equals("assign")){
-                Variable variable = new Variable(tokens.get(i+1), tokens.get(i+2));
-                variablesInMemory.add(variable);
-                i+=2;
-            }
-
-
-        }
-    }
-
-
-    public static void equate(){
-        System.out.println("This method should calculate.");
-    }
 
 
 
